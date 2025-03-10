@@ -1,10 +1,17 @@
 package org.example.collectionClasses.enums;
 
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+@XmlEnum(String.class)
 public enum OrganizationType {
+    @XmlEnumValue("government")
     GOVERNMENT("government"),
+    @XmlEnumValue("trust")
     TRUST("trust"),
+    @XmlEnumValue("open_joint_stock_company")
     OPEN_JOINT_STOCK_COMPANY("open_joint_stock_company");
 
     private String name;
@@ -18,18 +25,19 @@ public enum OrganizationType {
         return this.name;
     }
 
-    public ArrayList<String> stringValues(){
-        ArrayList<String> result = new ArrayList<>();
-        for (OrganizationType elem: OrganizationType.values()){
-            result.add(elem.toString());
+    public static OrganizationType readOrganizationType(Scanner scanner) {
+        System.out.println("Please, enter only one field from the list:");
+        for (OrganizationType elem : OrganizationType.values()) {
+            System.out.println(elem.toString());
         }
-        return result;
+        String tmp = scanner.next();
+        return OrganizationType.fromString(tmp);
     }
 
-    public static OrganizationType fromString(String tmp) {
-        for (OrganizationType cur : OrganizationType.values()) {
-            if (cur.name.equalsIgnoreCase(tmp)) {
-                return cur;
+    public static OrganizationType fromString(String name) {
+        for (OrganizationType elem : OrganizationType.values()) {
+            if (name.equalsIgnoreCase(elem.toString())) {
+                return elem;
             }
         }
         return null;

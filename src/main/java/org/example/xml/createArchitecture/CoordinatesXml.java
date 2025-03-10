@@ -4,6 +4,8 @@ import org.example.collectionClasses.Coordinates;
 import org.example.xml.interfaces.ParseNodeable;
 import org.w3c.dom.*;
 
+import java.util.Scanner;
+
 public class CoordinatesXml implements ParseNodeable<Coordinates> {
 
     @Override
@@ -17,7 +19,16 @@ public class CoordinatesXml implements ParseNodeable<Coordinates> {
         return result;
     }
 
+    private void setTextNode(Node curNode){
+        Scanner scanner = new Scanner(System.in);
+        System.out.printf("Please, enter %s\n", curNode.getNodeName());
+        curNode.setTextContent(scanner.next());
+    }
+
     private void parseField(Node curNode, Coordinates result){
+        if (curNode.getTextContent().isEmpty()){
+            setTextNode(curNode);
+        }
         switch (curNode.getNodeName()){
             case "x" -> parseX(curNode, result);
             case "y" -> parseY(curNode, result);

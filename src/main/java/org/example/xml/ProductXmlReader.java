@@ -8,8 +8,6 @@ import org.w3c.dom.NodeList;
 
 import java.util.TreeMap;
 
-import static java.lang.Math.random;
-
 public class ProductXmlReader extends XmlFile<Product>{
 
     public ProductXmlReader(String nameVar){
@@ -21,11 +19,12 @@ public class ProductXmlReader extends XmlFile<Product>{
         Document document = createDocument();
         Node root = document.getFirstChild();
         NodeList childList = root.getChildNodes();
-        TreeMap<Product,Integer> result = new TreeMap<>(new Sorting());
+        TreeMap<Product, Integer> result = new TreeMap<>(new Sorting());
         for (int i = 0; i < childList.getLength(); ++i){
             Node curNode = childList.item(i);
             if (curNode.getNodeName().equals("Product")) {
-                result.put(new ProductXml().parseNode(curNode), (int) (random() * 1000));
+                Product tmp = new ProductXml().parseNode(curNode);
+                result.put(tmp, tmp.getId());
             }
         }
         return result;

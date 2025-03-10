@@ -4,13 +4,12 @@ import org.example.collectionClasses.Product;
 
 import java.util.Comparator;
 
-class Sorting implements Comparator<Product> {
+public class Sorting implements Comparator<Product> {
+
     @Override
-    public int compare(Product a, Product b){
-        if (a.getPrice().equals(b.getPrice())){
-            return a.getName().compareTo(b.getName());
-        }else{
-            return (a.getPrice() < b.getPrice() ? -1 : 1);
-        }
+    public int compare(Product a, Product b) {
+        if (a.equals(b))
+            return 0;
+        return (a.getPrice() < b.getPrice() ? -1 : 1);
     }
 }
