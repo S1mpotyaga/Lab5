@@ -2,15 +2,14 @@ package org.example.collectionClasses;
 
 import org.example.collectionClasses.enums.UnitOfMeasure;
 import lombok.Data;
-import org.example.collectionClasses.getters.ProductReadable;
+import org.example.collectionClasses.interfaces.ProductReadable;
 
 import javax.xml.bind.annotation.*;
 import java.time.LocalDate;
-import java.util.Comparator;
 
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Product implements ProductReadable {
+public class Product implements ProductReadable{
     @XmlElement(name="id")
     private int id;
     @XmlElement(name="name")

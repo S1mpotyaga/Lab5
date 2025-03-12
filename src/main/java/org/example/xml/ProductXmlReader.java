@@ -1,7 +1,7 @@
 package org.example.xml;
 
 import org.example.collectionClasses.Product;
-import org.example.xml.createArchitecture.ProductXml;
+import org.example.xml.Architecture.ProductXml;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

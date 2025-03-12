@@ -6,8 +6,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.*;
 
-import lombok.Data;
-import org.example.collectionClasses.getters.ProductReadable;
+import org.example.collectionClasses.interfaces.ProductReadable;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -16,7 +15,6 @@ import javax.xml.bind.Marshaller;
 import static java.lang.Math.random;
 import static java.lang.System.exit;
 
-@Data
 public class App {
 
     private ProductCollection productCollection;
@@ -72,7 +70,7 @@ public class App {
         System.out.println("update id {element} - update value collection's element, which have id equals given id. {element} is entered line by line.");
         System.out.println("remove_key {element} - remove collection's element by key {element}. {element} is entered line by line.");
         System.out.println("clear - clear collection");
-        System.out.println("save - save collection to file with name 'collection.xml'");
+        System.out.println("save - save collection to file");
         System.out.println("execute_script file_name - execute commands in file, which name is file_name. File contains commands in interactive format.");
         System.out.println("exit - finish application.");
         System.out.println("replace_if_greater {element} - change value by {element}, if new value is bigger than old value. {element} is entered line by line.");
@@ -104,19 +102,16 @@ public class App {
     }
 
     private void update() {
-        Scanner scanner = new Scanner(System.in);
-        int idChange = scanner.nextInt();
+        System.out.println("Enter id, which you want to change: ");
+        int idChange = readId();
         Product newProduct = ProductReadable.readProduct();
         this.productCollection.setId(idChange, newProduct);
-        scanner.close();
     }
 
     private void removeKey() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter id Product, which you want to delete: ");
-        int id = scanner.nextInt();
+        int id = readId();
         this.productCollection.deleteId(id);
-        scanner.close();
     }
 
     private void clearCollection() {
@@ -128,7 +123,8 @@ public class App {
             JAXBContext context = JAXBContext.newInstance(ProductCollection.class);
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            File fileOutput = new File("collection.xml");
+            String nameFileOutput = getFileOutputName();
+            File fileOutput = new File(nameFileOutput);
             this.productCollection.createOut(this.productCollection.getProducts().keySet());
             marshaller.marshal(this.productCollection, fileOutput);
         } catch (JAXBException e) {
@@ -152,13 +148,12 @@ public class App {
     }
 
     private void replaceValue(boolean greater) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter changeable id: ");
-        int changeId = scanner.nextInt();
+        int changeId = readId();
         Product product = this.productCollection.findId(changeId);
         while (product == null) {
             System.out.println("Don't exist this id. Enter changeable id again: ");
-            changeId = scanner.nextInt();
+            changeId = readId();
             product = this.productCollection.findId(changeId);
         }
         int newVal = (int) (random() * 1000);
@@ -217,5 +212,11 @@ public class App {
             Map.Entry<Product, Integer> elem = (Map.Entry<Product, Integer>) i.next();
             System.out.println(elem.getKey().getPrice());
         }
+    }
+
+    private String getFileOutputName(){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter name file output: ");
+        return in.next();
     }
 }

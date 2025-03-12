@@ -1,12 +1,11 @@
-package org.example.xml.createArchitecture;
+package org.example.xml.Architecture;
 
 import org.example.collectionClasses.enums.UnitOfMeasure;
+import org.example.collectionClasses.interfaces.ProductReadable;
 import org.example.xml.interfaces.*;
 import org.example.collectionClasses.Product;
 import org.w3c.dom.*;
 
-import java.lang.reflect.Field;
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ProductXml implements ParseNodeable<Product>{
@@ -21,6 +20,7 @@ public class ProductXml implements ParseNodeable<Product>{
             Node curNode = childNodes.item(i);
             parseField(curNode, result);
         }
+        ProductReadable.setIncoorectFields(result);
         return result;
     }
 

@@ -1,6 +1,7 @@
-package org.example.xml.createArchitecture;
+package org.example.xml.Architecture;
 
 import org.example.collectionClasses.Coordinates;
+import org.example.collectionClasses.interfaces.CoordinatesReadable;
 import org.example.xml.interfaces.ParseNodeable;
 import org.w3c.dom.*;
 
@@ -16,6 +17,7 @@ public class CoordinatesXml implements ParseNodeable<Coordinates> {
             Node curNode = childNodes.item(i);
             parseField(curNode, result);
         }
+        CoordinatesReadable.setIncorrectFields(result);
         return result;
     }
 

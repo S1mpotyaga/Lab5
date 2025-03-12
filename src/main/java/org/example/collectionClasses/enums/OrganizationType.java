@@ -25,12 +25,13 @@ public enum OrganizationType {
         return this.name;
     }
 
-    public static OrganizationType readOrganizationType(Scanner scanner) {
+    public static OrganizationType readOrganizationType() {
         System.out.println("Please, enter only one field from the list:");
+        Scanner in = new Scanner(System.in);
         for (OrganizationType elem : OrganizationType.values()) {
             System.out.println(elem.toString());
         }
-        String tmp = scanner.next();
+        String tmp = in.next();
         return OrganizationType.fromString(tmp);
     }
 

@@ -28,12 +28,13 @@ public enum UnitOfMeasure {
         return this.name;
     }
 
-    public static UnitOfMeasure readUnitOfMeasure(Scanner scanner) {
+    public static UnitOfMeasure readUnitOfMeasure() {
         System.out.println("Please, enter only one field from the list:");
+        Scanner in = new Scanner(System.in);
         for (UnitOfMeasure elem : UnitOfMeasure.values()) {
             System.out.println(elem.toString());
         }
-        String tmp = scanner.next();
+        String tmp = in.next();
         return UnitOfMeasure.fromString(tmp);
     }
 

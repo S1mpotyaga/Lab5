@@ -1,7 +1,8 @@
-package org.example.xml.createArchitecture;
+package org.example.xml.Architecture;
 
 import org.example.collectionClasses.Organization;
 import org.example.collectionClasses.enums.OrganizationType;
+import org.example.collectionClasses.interfaces.OrganizationReadable;
 import org.example.xml.interfaces.ParseNodeable;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -28,6 +29,7 @@ public class OrganizationXml implements ParseNodeable<Organization> {
             Node curNode = childNodes.item(i);
             parseField(curNode, result);
         }
+        OrganizationReadable.setIncorrectFields(result);
         return result;
     }
 
