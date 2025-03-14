@@ -1,10 +1,10 @@
-package org.example.collectionClasses.enums;
+package org.example.collectionClasses.types;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import java.util.ArrayList;
-import java.util.Scanner;
+import jakarta.xml.bind.annotation.*;
 
+/**
+ * Possible values of the Organization type.
+ */
 @XmlEnum(String.class)
 public enum OrganizationType {
     @XmlEnumValue("government")
@@ -25,16 +25,11 @@ public enum OrganizationType {
         return this.name;
     }
 
-    public static OrganizationType readOrganizationType() {
-        System.out.println("Please, enter only one field from the list:");
-        Scanner in = new Scanner(System.in);
-        for (OrganizationType elem : OrganizationType.values()) {
-            System.out.println(elem.toString());
-        }
-        String tmp = in.next();
-        return OrganizationType.fromString(tmp);
-    }
-
+    /**
+     * method that maps a string to an OrganizationType object.
+     * @param name
+     * @return an OrganizationType object.
+     */
     public static OrganizationType fromString(String name) {
         for (OrganizationType elem : OrganizationType.values()) {
             if (name.equalsIgnoreCase(elem.toString())) {

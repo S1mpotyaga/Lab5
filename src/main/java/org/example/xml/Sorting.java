@@ -4,6 +4,9 @@ import org.example.collectionClasses.Product;
 
 import java.util.Comparator;
 
+/**
+ * Product collection comparator.
+ */
 public class Sorting implements Comparator<Product> {
 
     @Override

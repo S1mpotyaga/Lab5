@@ -1,12 +1,15 @@
 package org.example.collectionClasses;
 
-import org.example.collectionClasses.enums.UnitOfMeasure;
+import org.example.collectionClasses.types.UnitOfMeasure;
 import lombok.Data;
-import org.example.collectionClasses.interfaces.ProductReadable;
+import org.example.collectionClasses.readers.ProductReadable;
 
-import javax.xml.bind.annotation.*;
+import jakarta.xml.bind.annotation.*;
 import java.time.LocalDate;
 
+/**
+ * TreeMap collection key.
+ */
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Product implements ProductReadable{
@@ -24,14 +27,24 @@ public class Product implements ProductReadable{
     private Organization organization;
     @XmlElement(name="creationDate")
     private java.time.LocalDate creationDate;
+    /**
+     * Number of created Products.
+     */
     @XmlTransient
     private static int productNumber = 0;
 
+    /**
+     * A constructor that initializes the object's base values.
+     */
     public Product(){
         this.id = ++productNumber;
         this.creationDate = LocalDate.now();
     }
 
+    /**
+     * Constructor that initializes the object's base values and the specified id.
+     * * @param id the specified id.
+     */
     public Product(int id){
         this.id = id;
         this.creationDate = LocalDate.now();

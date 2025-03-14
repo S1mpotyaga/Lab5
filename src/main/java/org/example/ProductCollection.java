@@ -1,55 +1,89 @@
 package org.example;
 
+import jakarta.xml.bind.annotation.*;
 import org.example.collectionClasses.Product;
 
 import java.util.*;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.Data;
-import org.example.xml.ProductXmlReader;
-
-import javax.xml.bind.annotation.*;
+import org.example.collectionClasses.readers.ProductReadable;
+import org.example.xml.XmlReader;
 
 import static java.lang.Math.random;
 
+/**
+ * A class that stores and manages a collection.
+ */
 @Data
 @XmlRootElement(name="Products")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProductCollection {
 
+    /**
+     * A collection of Product objects, where the TreeMap key is a Product object and the value is a random number up to 1000.
+     */
     @XmlTransient
     private TreeMap<Product, Integer> products;
 
+    /**
+     * List needed to output the products collection using the JAXB tool.
+     */
     @XmlElement(name="Product")
     private List<Product> out = new ArrayList<>();
 
+    /**
+     *A constructor that reads input from a file whose path is specified via the environment variable 'Lab5'.
+     */
     public ProductCollection() {
-        ProductXmlReader tmp = new ProductXmlReader("Lab5");
+        XmlReader tmp = new XmlReader("Lab5");
         this.products = tmp.xmlRead();
     }
 
+    /**
+     * Adds a Product object to the collection, generating a value.
+     * @param add the Product object to add
+     */
     public void addProduct(Product add) {
         this.products.put(add, (int)(random() * 1000));
     }
 
-    public void setId(int id, Product newProduct) {
-        if (this.products.containsKey(newProduct)) {
-            this.products.replace(newProduct, id);
-        } else {
-            addProduct(newProduct);
+    /**
+     * Replaces the Product object by id.
+     * @param id id of the collection object to change.
+     */
+    public void setId(int id) {
+        Product curIdProduct = findId(id);
+        Product newProduct;
+        if (curIdProduct == null){
+            newProduct = ProductReadable.readProduct();
+        }else{
+            newProduct = ProductReadable.readProduct(id);
+            this.products.remove(curIdProduct);
         }
+        this.products.put(newProduct, (int)(random() * 1000));
     }
 
+    /**
+     * Removes a collection element by id.
+     * @param id
+     */
     public void deleteId(int id){
         Product idProduct = findId(id);
         this.products.remove(idProduct);
     }
 
+    /**
+     * Removes all objects from the collection.
+     */
     public void clearCollection(){
         this.products.clear();
     }
 
+    /**
+     * Finds a collection object by id
+     * @param id id of the object to find.
+     * @return the Product element of the collection with the corresponding id. May be null.
+     */
     public Product findId(int id){
         Iterator<Map.Entry<Product, Integer>> i = this.products.entrySet().iterator();
         while (i.hasNext()) {
@@ -61,6 +95,10 @@ public class ProductCollection {
         return null;
     }
 
+    /**
+     * Creates a List to output the collection to an xml file.
+     * @param tmp Set of collection keys.
+     */
     public void createOut(Set<Product> tmp){
         this.out.addAll(tmp);
     }

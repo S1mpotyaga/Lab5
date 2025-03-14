@@ -1,13 +1,14 @@
-package org.example.collectionClasses.enums;
+package org.example.collectionClasses.types;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
+import org.example.collectionClasses.readers.UnitOfMeasureReadable;
 
+import jakarta.xml.bind.annotation.*;
+
+/**
+ * Possible units of measurement.
+ */
 @XmlEnum(String.class)
-public enum UnitOfMeasure {
+public enum UnitOfMeasure implements UnitOfMeasureReadable {
     @XmlEnumValue("kilograms")
     KILOGRAMS("kilograms"),
     @XmlEnumValue("centimeters")
@@ -28,16 +29,11 @@ public enum UnitOfMeasure {
         return this.name;
     }
 
-    public static UnitOfMeasure readUnitOfMeasure() {
-        System.out.println("Please, enter only one field from the list:");
-        Scanner in = new Scanner(System.in);
-        for (UnitOfMeasure elem : UnitOfMeasure.values()) {
-            System.out.println(elem.toString());
-        }
-        String tmp = in.next();
-        return UnitOfMeasure.fromString(tmp);
-    }
-
+    /**
+     * Maps the string name to a UnitOfMeasure object.
+     * @param name
+     * @return a UnitOfMeasure object.
+     */
     public static UnitOfMeasure fromString(String name) {
         for (UnitOfMeasure elem : UnitOfMeasure.values()) {
             if (name.equalsIgnoreCase(elem.toString())) {
