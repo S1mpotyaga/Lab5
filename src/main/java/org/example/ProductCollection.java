@@ -2,11 +2,13 @@ package org.example;
 
 import jakarta.xml.bind.annotation.*;
 import org.example.collectionClasses.Product;
+import org.example.xml.Sorting;
 
 import java.util.*;
 
 import lombok.Data;
 import org.example.collectionClasses.readers.ProductReadable;
+import org.example.xml.Sorting;
 import org.example.xml.XmlReader;
 
 import static java.lang.Math.random;
@@ -23,20 +25,22 @@ public class ProductCollection {
      * A collection of Product objects, where the TreeMap key is a Product object and the value is a random number up to 1000.
      */
     @XmlTransient
-    private TreeMap<Product, Integer> products;
+    private TreeMap<Product, Integer> products = new TreeMap<>(new Sorting());
 
     /**
      * List needed to output the products collection using the JAXB tool.
      */
     @XmlElement(name="Product")
-    private List<Product> out = new ArrayList<>();
+    private List<Product> translator = new ArrayList<>();
 
     /**
-     *A constructor that reads input from a file whose path is specified via the environment variable 'Lab5'.
+     * Intermediate method translating List to TreeMap.
+     * @param productCollection object ProductCollection with empty products and not empty translator.
      */
-    public ProductCollection() {
-        XmlReader tmp = new XmlReader("Lab5");
-        this.products = tmp.xmlRead();
+    public void copyProducts(ProductCollection productCollection){
+        for (Product elem: productCollection.getTranslator()){
+            productCollection.getProducts().put(elem, (int)(random() * 1000));
+        }
     }
 
     /**
@@ -96,10 +100,11 @@ public class ProductCollection {
     }
 
     /**
-     * Creates a List to output the collection to an xml file.
+     * Creates a List to output the collection to a xml file.
      * @param tmp Set of collection keys.
      */
     public void createOut(Set<Product> tmp){
-        this.out.addAll(tmp);
+        this.translator.clear();
+        this.translator.addAll(tmp);
     }
 }

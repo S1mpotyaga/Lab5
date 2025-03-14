@@ -16,6 +16,7 @@ import static java.lang.System.exit;
 
 import org.example.collectionClasses.readers.ProductReadable;
 import org.example.collectionClasses.readers.Readable;
+import org.example.xml.XmlReader;
 
 
 /**
@@ -42,7 +43,8 @@ public class App {
      * After creating a collection, the application automatically starts.
      */
     public App() {
-        this.productCollection = new ProductCollection();
+        XmlReader xmlReader = new XmlReader("Lab5");
+        this.productCollection = xmlReader.xmlRead();
         this.creationDate = LocalDate.now();
         start();
     }

@@ -1,63 +1,48 @@
 package org.example.xml;
 
-import org.example.collectionClasses.Product;
-import org.example.xml.Architecture.ProductXml;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
+import org.example.ProductCollection;
+import org.example.collectionClasses.readers.Readable;
 import org.example.xml.xmlReaders.XmlReadable;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
-import java.util.TreeMap;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.StringReader;
+import java.util.stream.Collectors;
 
 /**
  * A class that defines a method for reading a collection.
  */
 public class XmlReader implements XmlReadable {
 
-    private String name;
+    private String path;
 
     /**
-     * Specifies the name of the input file.
-     * @param nameVar variable name
+     * Specifies the path of the input file.
+     * @param pathVar variable path
      */
-    public XmlReader(String nameVar){
-        this.name = System.getenv(nameVar);
+    public XmlReader(String pathVar){
+        this.path = System.getenv(pathVar);
     }
 
     @Override
-    public TreeMap<Product, Integer> xmlRead(){
-        Document document = createDocument();
-        Node root = document.getFirstChild();
-        NodeList childList = root.getChildNodes();
-        TreeMap<Product, Integer> result = new TreeMap<>(new Sorting());
-        for (int i = 0; i < childList.getLength(); ++i){
-            Node curNode = childList.item(i);
-            if (curNode.getNodeName().equals("Product")) {
-                Product tmp = new ProductXml().parseNode(curNode);
-                result.put(tmp, tmp.getId());
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Creates a Document and checks its creation.
-     * @return Document with input collection.
-     */
-    private Document createDocument(){
-        Document document = null;
+    public ProductCollection xmlRead(){
         try {
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            document = builder.parse(new File(this.name));
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            System.out.println(e.getMessage());
+            BufferedReader bfReader = new BufferedReader(new FileReader(path));
+            String body = bfReader.lines().collect(Collectors.joining());
+            StringReader reader = new StringReader(body);
+            JAXBContext context = JAXBContext.newInstance(ProductCollection.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            ProductCollection result = (ProductCollection) unmarshaller.unmarshal(reader);
+            result.copyProducts(result);
+            return result;
+        } catch (FileNotFoundException | JAXBException e){
+            System.out.print("Wrong path to input xml file or wrong input data. Check input file and enter path to file:");
+            this.path = Readable.scanner.nextLine();
+            return xmlRead();
         }
-        return document;
     }
 }
