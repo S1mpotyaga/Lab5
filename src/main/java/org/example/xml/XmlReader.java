@@ -46,6 +46,10 @@ public class XmlReader implements XmlReadable {
         return result;
     }
 
+    /**
+     * Creates a Document and checks its creation.
+     * @return Document with input collection.
+     */
     private Document createDocument(){
         Document document = null;
         try {

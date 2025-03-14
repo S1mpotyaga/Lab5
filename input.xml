@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Products>
+    <Product>
+        <id>1</id>
+        <name>Product1</name>
+        <coordinates>
+            <x>1</x>
+            <y>-100</y>
+        </coordinates>
+        <price>199</price>
+        <unitOfMeasure>kilograms</unitOfMeasure>
+        <organization>
+            <id>1</id>
+            <name>Org1</name>
+            <fullName>Organization1</fullName>
+            <organizationType>government</organizationType>
+        </organization>
+    </Product>
+    <Product>
+        <id>2</id>
+        <name>Product2</name>
+        <coordinates>
+            <x>100</x>
+            <y>1</y>
+        </coordinates>
+        <price>99</price>
+        <unitOfMeasure>centimeters</unitOfMeasure>
+        <organization>
+            <id>2</id>
+            <name>Org2</name>
+            <fullName>Organization2</fullName>
+            <organizationType>trust</organizationType>
+        </organization>
+    </Product>
+</Products>

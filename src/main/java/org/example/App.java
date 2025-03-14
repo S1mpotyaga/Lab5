@@ -60,6 +60,7 @@ public class App {
 
     /**
      * Calls the function corresponding to the entered command
+     *
      * @param command command and its parameters
      */
     private void callCommandFunction(String[] command) {
@@ -72,7 +73,7 @@ public class App {
             case "remove_key" -> removeKey();
             case "clear" -> clearCollection();
             case "save" -> saveCollection();
-            case "execute_script" -> executeScript(command[1]);
+            case "execute_script" -> checkAndReadInputFile(command);
             case "replace_if_greater" -> replaceValue(true);
             case "replace_if_lowe" -> replaceValue(false);
             case "remove_greater_key" -> removeGreaterKey();
@@ -85,6 +86,7 @@ public class App {
 
     /**
      * Reads the Product id
+     *
      * @return Product id
      */
     private int readId() {
@@ -106,7 +108,7 @@ public class App {
         System.out.println("remove_key {element} - remove collection's element by key {element}. {element} is entered line by line.");
         System.out.println("clear - clear collection");
         System.out.println("save - save collection to xml or txt file");
-        System.out.println("execute_script file_name - execute commands in file, which name is file_name. File contains commands in interactive format.");
+        System.out.println("execute_script file_name - execute commands in file, which name is file_name. File contains only command name.");
         System.out.println("exit - finish application.");
         System.out.println("replace_if_greater {element} - change value by {element}, if new value is bigger than old value. {element} is entered line by line.");
         System.out.println("replace_if_low {element} - change value by {element}, if new value is lower than old value. {element} is entered line by line.");
@@ -205,7 +207,7 @@ public class App {
      */
     private void txtSaveCollection() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(getFileOutputName()))) {
-            for (Product elem: this.productCollection.getProducts().keySet()){
+            for (Product elem : this.productCollection.getProducts().keySet()) {
                 writer.write(elem.toString() + "\n");
             }
         } catch (IOException e) {
@@ -216,23 +218,40 @@ public class App {
 
     /**
      * Reads commands from a script.
+     *
      * @param name name of the file to read.
      */
     private void executeScript(String name) {
         try (Scanner reader = new Scanner(new BufferedInputStream(new FileInputStream(new File(name))))) {
             while (reader.hasNextLine()) {
-                String[] command = reader.nextLine().split(" ");
-                callCommandFunction(command);
+                String[] curCommand = reader.nextLine().split(" ");
+                callCommandFunction(curCommand);
             }
         } catch (IOException e) {
-            System.out.print("File not found. Please, enter file name again: ");
+            System.out.print("File not found. Please, enter file path again: ");
             String tmp = Readable.scanner.next();
             executeScript(tmp);
         }
     }
 
     /**
+     * Checks the correctness of the entered command and runs the corresponding function.
+     * @param command input command.
+     */
+    private void checkAndReadInputFile(String[] command) {
+        String resultName;
+        if (command.length < 2) {
+            System.out.print("Enter path input file: ");
+            resultName = Readable.scanner.nextLine();
+        }else {
+            resultName = command[1];
+        }
+        executeScript(resultName);
+    }
+
+    /**
      * Replaces the collection value, depending on the greater parameter.
+     *
      * @param greater true if the new value is greater than the old one, false otherwise.
      */
     private void replaceValue(boolean greater) {
@@ -314,12 +333,13 @@ public class App {
 
     /**
      * Reads the name of the file to save the collection to.
+     *
      * @return the name of the output file.
      */
     private String getFileOutputName() {
         System.out.print("Enter name file output: ");
         String name = Readable.scanner.next();
-        if (!name.substring(name.length() - 4).equals("xml")){
+        if (!name.substring(name.length() - 4).equals("xml")) {
             name += ".xml";
         }
         return name;

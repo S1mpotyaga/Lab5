@@ -7,7 +7,7 @@ import jakarta.xml.bind.JAXBException;
  */
 class Main{
     public static void main(String[] args){
-        System.out.println(JAXBException.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+//        System.out.println(JAXBException.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         App application = new App();
     }
 }
