@@ -39,7 +39,7 @@ public class XmlReader implements XmlReadable {
             ProductCollection result = (ProductCollection) unmarshaller.unmarshal(reader);
             result.copyProducts(result);
             return result;
-        } catch (FileNotFoundException | JAXBException e){
+        } catch (FileNotFoundException | JAXBException | NullPointerException e){
             System.out.print("Wrong path to input xml file or wrong input data. Check input file and enter path to file:");
             this.path = Readable.scanner.nextLine();
             return xmlRead();
