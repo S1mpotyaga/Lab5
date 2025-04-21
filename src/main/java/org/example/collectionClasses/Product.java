@@ -5,6 +5,7 @@ import lombok.Data;
 import org.example.collectionClasses.readers.ProductReadable;
 
 import jakarta.xml.bind.annotation.*;
+
 import java.time.LocalDate;
 
 /**
@@ -12,20 +13,20 @@ import java.time.LocalDate;
  */
 @Data
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Product implements ProductReadable{
-    @XmlElement(name="id")
+public class Product implements ProductReadable {
+    @XmlElement(name = "id")
     private int id;
-    @XmlElement(name="name")
+    @XmlElement(name = "name")
     private String name;
-    @XmlElement(name="coordinates")
+    @XmlElement(name = "coordinates")
     private Coordinates coordinates;
-    @XmlElement(name="price")
+    @XmlElement(name = "price")
     private Long price;
-    @XmlElement(name="unitOfMeasure")
+    @XmlElement(name = "unitOfMeasure")
     private UnitOfMeasure unitOfMeasure;
-    @XmlElement(name="organization")
+    @XmlElement(name = "organization")
     private Organization organization;
-    @XmlElement(name="creationDate")
+    @XmlTransient
     private java.time.LocalDate creationDate;
     /**
      * Number of created Products.
@@ -36,7 +37,7 @@ public class Product implements ProductReadable{
     /**
      * A constructor that initializes the object's base values.
      */
-    public Product(){
+    public Product() {
         this.id = ++productNumber;
         this.creationDate = LocalDate.now();
     }
@@ -45,7 +46,7 @@ public class Product implements ProductReadable{
      * Constructor that initializes the object's base values and the specified id.
      * * @param id the specified id.
      */
-    public Product(int id){
+    public Product(int id) {
         this.id = id;
         this.creationDate = LocalDate.now();
     }

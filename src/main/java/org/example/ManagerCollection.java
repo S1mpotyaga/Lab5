@@ -1,6 +1,7 @@
 package org.example;
 
 import jakarta.xml.bind.annotation.*;
+import lombok.Getter;
 import org.example.collectionClasses.Product;
 import org.example.xml.Sorting;
 
@@ -8,8 +9,6 @@ import java.util.*;
 
 import lombok.Data;
 import org.example.collectionClasses.readers.ProductReadable;
-import org.example.xml.Sorting;
-import org.example.xml.XmlReader;
 
 import static java.lang.Math.random;
 
@@ -19,13 +18,14 @@ import static java.lang.Math.random;
 @Data
 @XmlRootElement(name="Products")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProductCollection {
+public class ManagerCollection {
 
     /**
      * A collection of Product objects, where the TreeMap key is a Product object and the value is a random number up to 1000.
      */
     @XmlTransient
-    private TreeMap<Product, Integer> products = new TreeMap<>(new Sorting());
+    @Getter
+    private static TreeMap<Product, Integer> products = new TreeMap<>(new Sorting());
 
     /**
      * List needed to output the products collection using the JAXB tool.
@@ -35,11 +35,11 @@ public class ProductCollection {
 
     /**
      * Intermediate method translating List to TreeMap.
-     * @param productCollection object ProductCollection with empty products and not empty translator.
+     * @param managerCollection object ProductCollection with empty products and not empty translator.
      */
-    public void copyProducts(ProductCollection productCollection){
-        for (Product elem: productCollection.getTranslator()){
-            productCollection.getProducts().put(elem, (int)(random() * 1000));
+    public void copyProducts(ManagerCollection managerCollection){
+        for (Product elem: managerCollection.getTranslator()){
+            products.put(elem, (int)(random() * 1000));
         }
     }
 
@@ -47,24 +47,24 @@ public class ProductCollection {
      * Adds a Product object to the collection, generating a value.
      * @param add the Product object to add
      */
-    public void addProduct(Product add) {
-        this.products.put(add, (int)(random() * 1000));
+    public static void addProduct(Product add) {
+        products.put(add, (int)(random() * 1000));
     }
 
     /**
      * Replaces the Product object by id.
      * @param id id of the collection object to change.
      */
-    public void setId(int id) {
+    public void setId(Scanner scanner, int id) {
         Product curIdProduct = findId(id);
         Product newProduct;
         if (curIdProduct == null){
-            newProduct = ProductReadable.readProduct();
+            newProduct = ProductReadable.readProduct(scanner);
         }else{
-            newProduct = ProductReadable.readProduct(id);
-            this.products.remove(curIdProduct);
+            newProduct = ProductReadable.readProduct(scanner, id);
+            products.remove(curIdProduct);
         }
-        this.products.put(newProduct, (int)(random() * 1000));
+        products.put(newProduct, (int)(random() * 1000));
     }
 
     /**
@@ -73,14 +73,14 @@ public class ProductCollection {
      */
     public void deleteId(int id){
         Product idProduct = findId(id);
-        this.products.remove(idProduct);
+        products.remove(idProduct);
     }
 
     /**
      * Removes all objects from the collection.
      */
     public void clearCollection(){
-        this.products.clear();
+        products.clear();
     }
 
     /**
@@ -89,7 +89,7 @@ public class ProductCollection {
      * @return the Product element of the collection with the corresponding id. May be null.
      */
     public Product findId(int id){
-        Iterator<Map.Entry<Product, Integer>> i = this.products.entrySet().iterator();
+        Iterator<Map.Entry<Product, Integer>> i = products.entrySet().iterator();
         while (i.hasNext()) {
             Map.Entry<Product, Integer> elem = (Map.Entry<Product, Integer>) i.next();
             if (elem.getKey().getId() == id){

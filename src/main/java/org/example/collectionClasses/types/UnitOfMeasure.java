@@ -42,4 +42,10 @@ public enum UnitOfMeasure implements UnitOfMeasureReadable {
         }
         return null;
     }
+
+    public static void printAll(){
+        for (UnitOfMeasure current: UnitOfMeasure.values()){
+            System.out.println(current.toString().toUpperCase());
+        }
+    }
 }

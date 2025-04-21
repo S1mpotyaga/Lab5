@@ -38,4 +38,10 @@ public enum OrganizationType {
         }
         return null;
     }
+
+    public static void printAll(){
+        for (OrganizationType current: OrganizationType.values()){
+            System.out.println(current.toString().toUpperCase());
+        }
+    }
 }

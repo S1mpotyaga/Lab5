@@ -1,13 +1,20 @@
 package org.example;
 
-import jakarta.xml.bind.JAXBException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Launch the application.
  */
 class Main{
+
+    private static final Logger logger = LogManager.getLogger();
+
     public static void main(String[] args){
-//        System.out.println(JAXBException.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        App application = new App();
+        Application application = new Application();
     }
 }

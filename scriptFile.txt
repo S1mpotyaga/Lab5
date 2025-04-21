@@ -1,3 +1,5 @@
 info
 show
 insert
+12
+pcs
